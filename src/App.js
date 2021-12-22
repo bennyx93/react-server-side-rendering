@@ -1,19 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { lazy, Suspense } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-import { Home } from './pages/Home';
-import { About } from './pages/About';
-import { Articles } from './pages/Articles';
+// import { Home } from './pages/Home';
+// import { About } from './pages/About';
+// import { Articles } from './pages/Articles';
 
-const BigGreenHeading = styled.h1`
-	color: green;
-	font-size: 96px;
-`;
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Articles = lazy(() => import('./pages/Articles'));
 
 const App = () => {
 	return (
 		<>
-			<BigGreenHeading>Server-Side Rendering Example</BigGreenHeading>
+			<h1>Server-Side Rendering Example</h1>
 			<ul>
 				<li>
 					<Link to="/">Home</Link>
@@ -25,17 +23,19 @@ const App = () => {
 					<Link to="/articles">Articles</Link>
 				</li>
 			</ul>
-			<Switch>
-				<Route path="/" exact>
-					<Home />
-				</Route>
-				<Route path="/about">
-					<About />
-				</Route>
-				<Route path="/articles">
-					<Articles />
-				</Route>
-			</Switch>
+			<Suspense fallback={<p>Loading...</p>}>
+				<Switch>
+					<Route path="/" exact>
+						<Home />
+					</Route>
+					<Route path="/about">
+						<About />
+					</Route>
+					<Route path="/articles">
+						<Articles />
+					</Route>
+				</Switch>
+			</Suspense>
 		</>
 	);
 }
